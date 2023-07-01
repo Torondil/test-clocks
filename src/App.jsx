@@ -1,20 +1,24 @@
 import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
-import ClockComponent from "./components/ClockComponent";
+import {ClockComponent, MapComponent} from "@/components";
+import {hoursInDay, timeZoneHours} from "@/constants/index.js";
+import {actionTypes} from "@/store/actionTypes/index.js";
 
-function App() {
+export const App = () => {
   const dispatch = useDispatch();
-
   const date = useSelector((state) => state.date);
 
   const changeDate = () => {
-    dispatch({ type: "SETNEWDATE", timeOffset: 24 });
+    dispatch({type: actionTypes.SET_NEW_DATE, timeOffset: hoursInDay});
   };
 
   return (
     <div className="App">
       <ClockComponent />
-      <button onClick={() => changeDate()}>But</button>
+        <button type="button"
+        onClick={changeDate}>Изменить таймзону</button>
+      {date.getDate()}
+      <MapComponent/>
     </div>
   );
 }

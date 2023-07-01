@@ -35,3 +35,17 @@
   stroke-width: 1px;
   stroke: #f55;
 }
+
+.mapWrapper {
+  width: 1000px;
+  display: flex;
+  background-size: contain;
+  height: 524px;
+  background-repeat: no-repeat;
+  background-image: url(./assets/images/map.png)
+}
+
+.timezoneFrame {
+  width: 41.6px;
+  height: 100%
+}
