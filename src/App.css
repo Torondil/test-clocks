@@ -3,3 +3,35 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+#clockApp {
+  display: flex;
+}
+
+.clock {
+  width: 250px;
+  height: 250px;
+  float: left;
+}
+
+.clock-face {
+  fill: #fff;
+  stroke: #aaa;
+  stroke-width: 1px;
+}
+
+.arrow-hours,
+.arrow-minutes,
+.arrow-seconds {
+  stroke-width: 0;
+  fill: #333;
+}
+
+.arrow-hours {
+  fill: #005e1f;
+}
+
+.arrow-seconds {
+  stroke-width: 1px;
+  stroke: #f55;
+}
