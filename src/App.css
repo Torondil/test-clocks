@@ -15,8 +15,9 @@
   align-items: center;
 }
 
-h1 {
-  margin: 1rem
+h2 {
+  margin-top: 0.5rem;
+  font-size: 1.2em;
 }
 
 body {

@@ -1,7 +1,12 @@
+.clockContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .clock {
-  width: 300px;
-  height: 300px;
-  margin: 20px;
+  width: 260px;
+  height: 260px;
+  margin: 9px 20px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +24,8 @@
 }
 
 .clockName {
-  text-align: center
+  text-align: center;
+  font-size: 0.8em;
 }
 
 .clockSmall {
@@ -27,7 +33,22 @@
   height: 200px;
 }
 
+.hide {
+  display: none;
+}
 
+.clockButton {
+  border-radius: 10px;
+  color: #383636;
+  transition: .2s linear;
+  background: #B1BABA;
+  width: 70%;
+  margin: 2px auto;
+}
+
+.clockButton:hover {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #BDC7C7;
+}
 
 .clock:before {
   content: "";
@@ -43,7 +64,7 @@
 }
 
 .hours {
-  height: 160px;
+  height: 130px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -54,7 +75,7 @@
   content: '';
   position: absolute;
   width: 8px;
-  height: 80px;
+  height: 70px;
   background-color: #383636;
   border-radius: 6px 6px 0 0;
 }
@@ -73,7 +94,7 @@
 }
 
 .minutes {
-  height: 190px;
+  height: 160px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -84,7 +105,7 @@
   content: '';
   position: absolute;
   width: 4px;
-  height: 90px;
+  height: 80px;
   background-color: rgb(39, 36, 36);
   border-radius: 6px 6px 0 0;
 }
@@ -102,7 +123,7 @@
 }
 
 .seconds {
-  height: 230px;
+  height: 190px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -113,7 +134,7 @@
   content: '';
   position: absolute;
   width: 2px;
-  height: 150px;
+  height: 120px;
   background-color: rgb(216, 48, 48);
   border-radius: 6px 6px 0 0;
 }

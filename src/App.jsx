@@ -8,7 +8,7 @@ export const App = () => {
   return (
     <div className="App">
       <div>
-        <h1>World Clock Test App</h1>
+        <h2>World Clock Test App</h2>
       </div>
       <div className="clockWrapper">
         <NewClock

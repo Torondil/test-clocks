@@ -1,10 +1,13 @@
 import styles from "./NewClock.module.css";
 import { useEffect, useRef } from "react";
 import moment from "moment";
+import { actionTypes } from "@/store/actionTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { ZONE_STEP } from "@/constants";
 
 export const NewClock = (props) => {
-  // console.log(moment().add(props.timeZone, "hours").toDate());
-  // console.log(moment().zone() - 60);
+  const dispatch = useDispatch();
+  const currentZone = useSelector((state) => state.timeOffset);
 
   const hours = useRef(null);
   const minutes = useRef(null);
@@ -38,22 +41,54 @@ export const NewClock = (props) => {
     };
   });
 
+  const increaseTimeZone = () => {
+    dispatch({ type: actionTypes.INCREASE_HOUR, timeOffset: ZONE_STEP });
+  };
+
+  const decreaseTimeZone = () => {
+    dispatch({ type: actionTypes.DECREASE_HOUR, timeOffset: ZONE_STEP });
+  };
+
   return (
-    <div>
+    <div className={styles.clockContainer}>
       <p className={styles.clockName}>{props.name}</p>
+      <button className={`${styles.clockButton} ${
+              props.small ? styles.hide : ""
+            }`} onClick={() => decreaseTimeZone()}>
+        Increase Time
+      </button>
+      <button className={`${styles.clockButton} ${
+              props.small ? styles.hide : ""
+            }`} onClick={() => increaseTimeZone()}>
+        Decrease Time
+      </button>
       <div
         className={`${styles.clock} ${props.small ? styles.clockSmall : ""}`}
       >
         <div ref={hours} className={styles.hour}>
-          <div className={`${styles.hours} ${props.small ? styles.hoursSmall : ""}`}></div>
+          <div
+            className={`${styles.hours} ${
+              props.small ? styles.hoursSmall : ""
+            }`}
+          ></div>
         </div>
 
         <div className={styles.minute}>
-          <div ref={minutes} className={`${styles.minutes} ${props.small ? styles.minutesSmall : ""}`}></div>
+          <div
+            ref={minutes}
+            className={`${styles.minutes} ${
+              props.small ? styles.minutesSmall : ""
+            }`}
+          ></div>
         </div>
 
         <div className={styles.second}>
-          <div ref={seconds} className={`${styles.seconds} ${props.small ? styles.secondsSmall : ""}`}></div>
+          <div
+            ref={seconds}
+            className={`${styles.seconds} ${
+              props.small ? styles.secondsSmall : ""
+            }`}
+          ></div>
         </div>
       </div>
     </div>
