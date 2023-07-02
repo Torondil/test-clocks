@@ -1,2 +1,2 @@
-export * from './ClockComponent.jsx'
-export * from './MapComponent.jsx'
+export * from './MapComponent/MapComponent.jsx'
+export * from './NewClock/NewClock.jsx'
