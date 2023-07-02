@@ -1,0 +1,19 @@
+.mapWrapper {
+    width: 1000px;
+    display: flex;
+    background-size: contain;
+    height: 524px;
+    background-repeat: no-repeat;
+    background-image: url(../../assets/images/map.png);
+    font-size: 0.4em;
+    text-align: center;
+  }
+
+  .timezoneFrame {
+    width: 100%;
+    height: 100%
+  }
+
+  .active {
+    background-color: rgba(57, 186, 236, 0.5);
+  }

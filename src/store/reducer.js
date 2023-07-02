@@ -1,13 +1,11 @@
 import moment from "moment";
 import { actionTypes } from "@/store/actionTypes/index.js";
-import { ZERO_VALUE, NEXT_VALUE, PREV_VALUE } from "@/constants/index.js";
+import { ZONE_STEP } from "@/constants/index.js";
 
 const initialState = {
-//   date: moment().toDate(),
-  timeOffset: ZERO_VALUE,
-  previousTimeOffset: PREV_VALUE,
-  nextTimeOffset: NEXT_VALUE
-
+  timeOffset: moment().zone(),
+  previousTimeOffset: moment().zone() - ZONE_STEP,
+  nextTimeOffset: moment().zone() + ZONE_STEP
 };
 
 export const reduser = (state = initialState, action) => {
@@ -15,10 +13,9 @@ export const reduser = (state = initialState, action) => {
     case actionTypes.SET_NEW_DATE: {
       return {
         ...state,
-        // date: moment().add(action.timeOffset, "hours").toDate(),
         timeOffset: action.timeOffset,
-        previousTimeOffset: action.timeOffset - 1,
-        nextTimeOffset: action.timeOffset + 1,
+        previousTimeOffset: action.timeOffset + ZONE_STEP,
+        nextTimeOffset: action.timeOffset - ZONE_STEP,
       };
     }
     default:

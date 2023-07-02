@@ -3,7 +3,8 @@ import { useEffect, useRef } from "react";
 import moment from "moment";
 
 export const NewClock = (props) => {
-  console.log(moment().format('Z'))
+  // console.log(moment().add(props.timeZone, "hours").toDate());
+  // console.log(moment().zone() - 60);
 
   const hours = useRef(null);
   const minutes = useRef(null);
@@ -14,8 +15,8 @@ export const NewClock = (props) => {
   const degHour = 30;
 
   const clock = () => {
-    const day = moment().add(props.timeZone, "hours").toDate();
-    const currentHours = day.getHours() * degHour;
+    const day = moment().zone(props.timeZone)._d;
+    const currentHours = day.getHours() * degHour - 60;
     const currentMinutes = day.getMinutes() * degSecond;
     const currentSeconds = day.getSeconds() * degSecond;
 
@@ -38,17 +39,22 @@ export const NewClock = (props) => {
   });
 
   return (
-    <div className={styles.clock}>
-      <div ref={hours} className={styles.hour}>
-        <div className={styles.hours}></div>
-      </div>
+    <div>
+      <p className={styles.clockName}>{props.name}</p>
+      <div
+        className={`${styles.clock} ${props.small ? styles.clockSmall : ""}`}
+      >
+        <div ref={hours} className={styles.hour}>
+          <div className={`${styles.hours} ${props.small ? styles.hoursSmall : ""}`}></div>
+        </div>
 
-      <div className={styles.minute}>
-        <div ref={minutes} className={styles.minutes}></div>
-      </div>
+        <div className={styles.minute}>
+          <div ref={minutes} className={`${styles.minutes} ${props.small ? styles.minutesSmall : ""}`}></div>
+        </div>
 
-      <div className={styles.second}>
-        <div ref={seconds} className={styles.seconds}></div>
+        <div className={styles.second}>
+          <div ref={seconds} className={`${styles.seconds} ${props.small ? styles.secondsSmall : ""}`}></div>
+        </div>
       </div>
     </div>
   );
