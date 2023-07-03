@@ -1,30 +1,32 @@
 import styles from "./NewClock.module.css";
-import { useEffect, useRef } from "react";
+import {useEffect, useRef} from "react";
 import moment from "moment";
-import { actionTypes } from "@/store/actionTypes";
-import { useDispatch, useSelector } from "react-redux";
-import { ZONE_STEP } from "@/constants";
+import {actionTypes} from "@/store/actionTypes";
+import {useDispatch} from "react-redux";
+import {
+  DEGREES_TO_ROTATE_HOUR_HAND,
+  DEGREES_TO_ROTATE_SECONDS_HAND,
+  HOURS_ON_CLOCK_FACE,
+  INTERVAL_DELAY,
+  ZONE_STEP
+} from "@/constants";
 
-export const NewClock = (props) => {
+export const NewClock = ({timeZone, name, small}) => {
   const dispatch = useDispatch();
-  const currentZone = useSelector((state) => state.timeOffset);
 
   const hours = useRef(null);
   const minutes = useRef(null);
   const seconds = useRef(null);
   const interval = useRef(null);
 
-  const degSecond = 6;
-  const degHour = 30;
-
   const clock = () => {
-    const day = moment().zone(props.timeZone)._d;
-    const currentHours = day.getHours() * degHour - 60;
-    const currentMinutes = day.getMinutes() * degSecond;
-    const currentSeconds = day.getSeconds() * degSecond;
+    const day = moment().zone(timeZone)._d;
+    const currentHours = day.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - 60;
+    const currentMinutes = day.getMinutes() * DEGREES_TO_ROTATE_SECONDS_HAND;
+    const currentSeconds = day.getSeconds() * DEGREES_TO_ROTATE_SECONDS_HAND;
 
     hours.current.style.transform = `rotateZ(${
-      currentHours + currentMinutes / 12
+      currentHours + currentMinutes / HOURS_ON_CLOCK_FACE
     }deg)`;
     minutes.current.style.transform = `rotateZ(${currentMinutes}deg)`;
     seconds.current.style.transform = `rotateZ(${currentSeconds}deg)`;
@@ -33,7 +35,7 @@ export const NewClock = (props) => {
   useEffect(() => {
     interval.current = setInterval(() => {
       clock();
-    }, 0);
+    }, INTERVAL_DELAY);
 
     return () => {
       clock();
@@ -41,54 +43,50 @@ export const NewClock = (props) => {
     };
   });
 
+  const buttonClassStyle = `${styles.clockButton} ${small ? styles.hide : ""}`
+  const hoursClassStyle = `${styles.hours} ${small ? styles.hoursSmall : ""}`
+  const minutesClassStyle = `${styles.minutes} ${small ? styles.minutesSmall : ""}`
+  const secondsClassStyle = `${styles.seconds} ${small ? styles.secondsSmall : ""}`
+
   const increaseTimeZone = () => {
-    dispatch({ type: actionTypes.INCREASE_HOUR, timeOffset: ZONE_STEP });
+    dispatch({type: actionTypes.INCREASE_HOUR, timeOffset: ZONE_STEP});
   };
 
   const decreaseTimeZone = () => {
-    dispatch({ type: actionTypes.DECREASE_HOUR, timeOffset: ZONE_STEP });
+    dispatch({type: actionTypes.DECREASE_HOUR, timeOffset: ZONE_STEP});
   };
 
   return (
     <div className={styles.clockContainer}>
-      <p className={styles.clockName}>{props.name}</p>
-      <button className={`${styles.clockButton} ${
-              props.small ? styles.hide : ""
-            }`} onClick={() => decreaseTimeZone()}>
-        Increase Time
-      </button>
-      <button className={`${styles.clockButton} ${
-              props.small ? styles.hide : ""
-            }`} onClick={() => increaseTimeZone()}>
-        Decrease Time
-      </button>
-      <div
-        className={`${styles.clock} ${props.small ? styles.clockSmall : ""}`}
-      >
+      <p className={styles.clockName}>{name}</p>
+      <div className={styles.buttonContainer}>
+        <button
+          type="button"
+          className={buttonClassStyle}
+          onClick={increaseTimeZone}
+        >
+          Decrease Time
+        </button>
+        <button
+          type="button"
+          className={buttonClassStyle}
+          onClick={decreaseTimeZone}
+        >
+          Increase Time
+        </button>
+      </div>
+
+      <div className={`${styles.clock} ${small ? styles.clockSmall : ""}`}>
         <div ref={hours} className={styles.hour}>
-          <div
-            className={`${styles.hours} ${
-              props.small ? styles.hoursSmall : ""
-            }`}
-          ></div>
+          <div className={hoursClassStyle}></div>
         </div>
 
         <div className={styles.minute}>
-          <div
-            ref={minutes}
-            className={`${styles.minutes} ${
-              props.small ? styles.minutesSmall : ""
-            }`}
-          ></div>
+          <div ref={minutes} className={minutesClassStyle}></div>
         </div>
 
         <div className={styles.second}>
-          <div
-            ref={seconds}
-            className={`${styles.seconds} ${
-              props.small ? styles.secondsSmall : ""
-            }`}
-          ></div>
+          <div ref={seconds} className={secondsClassStyle}></div>
         </div>
       </div>
     </div>

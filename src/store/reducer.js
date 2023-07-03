@@ -8,7 +8,7 @@ const initialState = {
   nextTimeOffset: moment().zone() + ZONE_STEP,
 };
 
-export const reduser = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_NEW_DATE: {
       return {
