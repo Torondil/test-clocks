@@ -4,7 +4,7 @@ This is a test task, which is a combination of the interaction of an analog cloc
 buttons for changing the user's time zone, as well as. an interactive map that highlights the active area with a blue
 glow (the area that matches the current value of the time zone)
 
-**Deploy:** sourse
+**Deploy:** https://world-clock-test-app.netlify.app/
 
 [![clock.png](https://i.postimg.cc/jSJH4BBn/Screenshot-2023-07-03-at-10-39-19-Clock-app.png)](https://postimg.cc/G4dTcgLb)
 
