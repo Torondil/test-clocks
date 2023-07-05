@@ -1,35 +1,39 @@
 import styles from "./NewClock.module.css";
-import {useEffect, useRef} from "react";
+import React, {FC, memo, useEffect, useRef} from "react";
 import moment from "moment";
-import {actionTypes} from "@/store/actionTypes";
-import {useDispatch} from "react-redux";
 import {
   DEGREES_TO_ROTATE_HOUR_HAND,
   DEGREES_TO_ROTATE_SECONDS_HAND,
   HOURS_ON_CLOCK_FACE,
   INTERVAL_DELAY,
+  MINUTES_IN_HOUR,
   ZONE_STEP
-} from "@/constants";
+} from "@/constants/index";
+import {Nullable, TimeoutType,} from "@/types";
+import {NewClockType} from "@/components/NewClock/types";
+import {useAppDispatch} from "@/store/store";
+import { decreaseHourAction, increaseHourAction } from "@/store/actionCreators";
 
-export const NewClock = ({timeZone, name, small}) => {
-  const dispatch = useDispatch();
+export const NewClock: FC<NewClockType> = memo(({timeZone, name, small = false}) => {
+  const dispatch = useAppDispatch();
 
-  const hours = useRef(null);
-  const minutes = useRef(null);
-  const seconds = useRef(null);
-  const interval = useRef(null);
+  const hours = useRef<Nullable<HTMLDivElement>>(null);
+  const minutes = useRef<Nullable<HTMLDivElement>>(null);
+  const seconds = useRef<Nullable<HTMLDivElement>>(null);
+  const interval = useRef<TimeoutType>(undefined);
 
-  const clock = () => {
-    const day = moment().zone(timeZone)._d;
-    const currentHours = day.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - 60;
-    const currentMinutes = day.getMinutes() * DEGREES_TO_ROTATE_SECONDS_HAND;
-    const currentSeconds = day.getSeconds() * DEGREES_TO_ROTATE_SECONDS_HAND;
 
-    hours.current.style.transform = `rotateZ(${
+  const clock = (): void => {
+    const day = moment().zone(timeZone)["_d"];
+    const currentHours: number = day.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - MINUTES_IN_HOUR;
+    const currentMinutes: number = day.getMinutes() * DEGREES_TO_ROTATE_SECONDS_HAND;
+    const currentSeconds: number = day.getSeconds() * DEGREES_TO_ROTATE_SECONDS_HAND;
+
+     hours.current!["style"].transform = `rotateZ(${
       currentHours + currentMinutes / HOURS_ON_CLOCK_FACE
     }deg)`;
-    minutes.current.style.transform = `rotateZ(${currentMinutes}deg)`;
-    seconds.current.style.transform = `rotateZ(${currentSeconds}deg)`;
+    minutes.current!["style"].transform = `rotateZ(${currentMinutes}deg)`;
+    seconds.current!["style"].transform = `rotateZ(${currentSeconds}deg)`;
   };
 
   useEffect(() => {
@@ -48,12 +52,12 @@ export const NewClock = ({timeZone, name, small}) => {
   const minutesClassStyle = `${styles.minutes} ${small ? styles.minutesSmall : ""}`
   const secondsClassStyle = `${styles.seconds} ${small ? styles.secondsSmall : ""}`
 
-  const increaseTimeZone = () => {
-    dispatch({type: actionTypes.INCREASE_HOUR, timeOffset: ZONE_STEP});
+  const increaseTimeZone = (): void => {
+    dispatch(increaseHourAction(ZONE_STEP));
   };
 
-  const decreaseTimeZone = () => {
-    dispatch({type: actionTypes.DECREASE_HOUR, timeOffset: ZONE_STEP});
+  const decreaseTimeZone = (): void => {
+    dispatch(decreaseHourAction(ZONE_STEP));
   };
 
   return (
@@ -91,4 +95,4 @@ export const NewClock = ({timeZone, name, small}) => {
       </div>
     </div>
   );
-};
+});

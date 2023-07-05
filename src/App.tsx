@@ -1,15 +1,15 @@
 import "./App.css";
-import { useSelector } from "react-redux";
+import { appSelector } from "@/store/store";
 import { MapComponent, NewClock, Title } from "@/components";
 
 export const App = () => {
-  const { previousTimeOffset, timeOffset, nextTimeOffset } = useSelector(
+  const { previousTimeOffset, timeOffset, nextTimeOffset } = appSelector(
     (state) => state
   );
 
   return (
     <div className="App">
-      <Title/>
+      <Title />
       <div className="clockWrapper">
         <NewClock timeZone={previousTimeOffset} name={"Previous zone time"} small />
         <NewClock timeZone={timeOffset} name={"Current zone time"} />
