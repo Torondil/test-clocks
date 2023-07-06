@@ -11,9 +11,9 @@ export const App = () => {
     <div className="App">
       <Title />
       <div className="clockWrapper">
-        <NewClock timeZone={previousTimeOffset} name={"Previous zone time"} small />
+        <NewClock timeZone={previousTimeOffset} name={"Previous zone time"} isSmall />
         <NewClock timeZone={timeOffset} name={"Current zone time"} />
-        <NewClock timeZone={nextTimeOffset} name={"Next zone time"} small />
+        <NewClock timeZone={nextTimeOffset} name={"Next zone time"} isSmall />
       </div>
       <MapComponent />
     </div>

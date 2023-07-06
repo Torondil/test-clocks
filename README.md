@@ -48,4 +48,6 @@ When you click on the "decrement" button, one hour decreases from the user's cur
 
 The current time zone on the central clock highlights the zone corresponding to it on the map.
 
+When you click on the hour hand of the clock, you can drag it forward or backward an hour, and according to this, the time zones on the map and the clock will change.
+
 **Additional functionality:** When clicking on one of the zones on the map, the current time of the user will be overwritten by the time corresponding to the time zone of the selected zone.

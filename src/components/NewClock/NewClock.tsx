@@ -14,7 +14,7 @@ import { Nullable, TimeoutType } from "@/types";
 import { NewClockType } from "@/components/NewClock/types";
 import { useAppDispatch } from "@/store/store";
 
-export const NewClock: FC<NewClockType> = memo(({ timeZone, name, small = false }) => {
+export const NewClock: FC<NewClockType> = memo(({ timeZone, name, isSmall = false }) => {
   const dispatch = useAppDispatch();
 
   const hours = useRef<Nullable<HTMLDivElement>>(null);
@@ -25,22 +25,37 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, small = false 
   const [previousZone, setPreviousZone] = useState<number>(0);
   const [isHourClicked, setIsHourClicked] = useState<boolean>(false);
 
-  const buttonClassStyle = `${styles.clockButton} ${small ? styles.hide : ""}`;
-  const hoursClassStyle = `${styles.hours} ${small ? styles.hoursSmall : ""}`;
-  const minutesClassStyle = `${styles.minutes} ${small ? styles.minutesSmall : ""}`;
-  const secondsClassStyle = `${styles.seconds} ${small ? styles.secondsSmall : ""}`;
-  const clockCircle = `${styles.clock} ${small ? styles.clockSmall : ""}`
+  const buttonClassStyle = `${styles.clockButton} ${isSmall ? styles.hide : ""}`;
+  const hoursClassStyle = `${styles.hours} ${isSmall ? styles.hoursSmall : ""}`;
+  const minutesClassStyle = `${styles.minutes} ${isSmall ? styles.minutesSmall : ""}`;
+  const secondsClassStyle = `${styles.seconds} ${isSmall ? styles.secondsSmall : ""}`;
+  const clockCircle = `${styles.clock} ${isSmall ? styles.clockSmall : ""}`;
 
+  useEffect(() => {
+    interval.current = setInterval(clock, INTERVAL_DELAY);
+
+    return () => {
+      clearInterval(interval.current);
+    };
+  }, [timeZone]);
 
   const clock = (): void => {
     const day = moment().zone(timeZone)["_d"];
+    // console.log(day1.getHours(), 'время 1')
+    const day1 = moment().zone(timeZone).toDate();
+    // console.log(day1.getHours(), 'время 2')
+
     const currentHours: number = day.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - MINUTES_IN_HOUR;
+    // const currentHours1: number = day1.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - MINUTES_IN_HOUR;
+    // console.log(currentHours1)
+    
     const currentMinutes: number = day.getMinutes() * DEGREES_TO_ROTATE_SECONDS_HAND;
     const currentSeconds: number = day.getSeconds() * DEGREES_TO_ROTATE_SECONDS_HAND;
+    console.log(currentHours, currentMinutes, currentSeconds)
 
-    hours.current!["style"].transform = `rotateZ(${currentHours + currentMinutes / HOURS_ON_CLOCK_FACE}deg)`;
-    minutes.current!["style"].transform = `rotateZ(${currentMinutes}deg)`;
-    seconds.current!["style"].transform = `rotateZ(${currentSeconds}deg)`;
+    hours.current!.style.transform = `rotateZ(${currentHours + currentMinutes / HOURS_ON_CLOCK_FACE}deg)`;
+    minutes.current!.style.transform = `rotateZ(${currentMinutes}deg)`;
+    seconds.current!.style.transform = `rotateZ(${currentSeconds}deg)`;
   };
 
   const getZone = (x: number, y: number): number => {
@@ -54,35 +69,37 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, small = false 
     if (zone <= 0) {
       zone += 12;
     }
-    return zone
+    return zone;
   };
 
-  const handleClockUnclicked = () => {
-    setIsHourClicked(false)
-    setPreviousZone(0)
-  }
-
-  const handleClockClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    const mouseX = event.clientX;
-    const mouseY = event.clientY;
-    const zone = getZone(mouseX, mouseY);
-
-    setPreviousZone(zone)
-    setIsHourClicked(true)
+  const handleClockUnclicked = (): void => {
+    setIsHourClicked(false);
+    setPreviousZone(0);
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isHourClicked && !small) {
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      const zone = getZone(mouseX, mouseY);
+  const handleClockClick = (event: React.MouseEvent<HTMLDivElement>): void => {
+    const { clientX, clientY } = event
+    const zone = getZone(clientX, clientY);
 
-      if (zone > previousZone && (zone !== 12 && timeZone !== 1) || (zone == 1 && previousZone == 12)) {
+    setPreviousZone(zone);
+    setIsHourClicked(true);
+  };
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
+    if (isHourClicked && !isSmall) {
+      const { clientX, clientY } = event
+      const zone = getZone(clientX, clientY);
+
+      if (
+        (zone > previousZone && zone !== 12 && timeZone !== 1) ||
+        (zone === 1 && previousZone === 12)
+      ) {
+        console.log(zone, previousZone, 'dec')
         decreaseTimeZone();
-      } else if (zone < previousZone || (zone == 12 && previousZone == 1)) {
+      } else if (zone < previousZone || (zone === 12 && previousZone === 1)) {
         increaseTimeZone();
+        console.log(zone, previousZone, 'inc')
       }
-
       setPreviousZone(zone);
     }
   };
@@ -94,18 +111,6 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, small = false 
   const decreaseTimeZone = (): void => {
     dispatch({ type: actionTypes.DECREASE_HOUR, timeOffset: ZONE_STEP });
   };
-
-  
-  useEffect(() => {
-    interval.current = setInterval(() => {
-      clock();
-    }, INTERVAL_DELAY);
-
-    return () => {
-      clock();
-      clearInterval(interval.current);
-    };
-  }, [timeZone]);
 
   return (
     <div className={styles.clockContainer}>
@@ -119,7 +124,12 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, small = false 
         </button>
       </div>
 
-      <div className={clockCircle} onMouseLeave={handleClockUnclicked} onMouseUp={handleClockUnclicked} onMouseMove={handleMouseMove}>
+      <div
+        className={clockCircle}
+        onMouseLeave={handleClockUnclicked}
+        onMouseUp={handleClockUnclicked}
+        onMouseMove={handleMouseMove}
+      >
         <div ref={hours} className={styles.hour} onMouseDown={handleClockClick}>
           <div className={hoursClassStyle}></div>
         </div>

@@ -1,6 +1,10 @@
+import { Nullable } from "@/types"
+
 export type NewClockType = {
   timeZone: number
   name: string
-  small?: boolean
-  isBig?: boolean
+  isSmall?: boolean
+}
+export type ClockRef = {
+  current: Nullable<HTMLDivElement>;
 }
