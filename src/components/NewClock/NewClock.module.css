@@ -66,6 +66,8 @@
 
 .hour {
   position: absolute;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .hours {
@@ -87,6 +89,7 @@
 
 .hoursSmall {
   height: 100px;
+  cursor:auto;
 }
 
 .hoursSmall:before {
