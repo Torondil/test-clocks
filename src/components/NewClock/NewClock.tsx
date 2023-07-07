@@ -24,6 +24,7 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, isSmall = fals
 
   const [previousZone, setPreviousZone] = useState<number>(0);
   const [isHourClicked, setIsHourClicked] = useState<boolean>(false);
+  const [isUpdateScheduled, setIsUpdateScheduled] = useState<boolean>(false);
 
   const buttonClassStyle = `${styles.clockButton} ${isSmall ? styles.hide : ""}`;
   const hoursClassStyle = `${styles.hours} ${isSmall ? styles.hoursSmall : ""}`;
@@ -71,7 +72,7 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, isSmall = fals
   };
 
   const handleClockClick = (event: React.MouseEvent<HTMLDivElement>): void => {
-    const { clientX, clientY } = event
+    const { clientX, clientY } = event;
     const zone = getZone(clientX, clientY);
 
     setPreviousZone(zone);
@@ -79,21 +80,26 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, isSmall = fals
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>): void => {
-    if (isHourClicked && !isSmall) {
-      const { clientX, clientY } = event
-      const zone = getZone(clientX, clientY);
+    if (isHourClicked && !isSmall && !isUpdateScheduled) {
+      setIsUpdateScheduled(true);
 
-      if (
-        (zone > previousZone && zone !== 12 && timeZone !== 1) ||
-        (zone === 1 && previousZone === 12)
-      ) {
-        console.log(zone, previousZone, 'dec')
-        decreaseTimeZone();
-      } else if (zone < previousZone || (zone === 12 && previousZone === 1)) {
-        increaseTimeZone();
-        console.log(zone, previousZone, 'inc')
-      }
-      setPreviousZone(zone);
+      requestAnimationFrame(() => {
+        const { clientX, clientY } = event;
+        const zone = getZone(clientX, clientY);
+
+        if (zone !== previousZone) {
+          if (
+            (zone > previousZone && zone !== 12 && timeZone !== 1) ||
+            (zone === 1 && previousZone === 12)
+          ) {
+            decreaseTimeZone();
+          } else if (zone < previousZone || (zone === 12 && previousZone === 1)) {
+            increaseTimeZone();
+          }
+          setPreviousZone(zone);
+        }
+        setIsUpdateScheduled(false);
+      })
     }
   };
 
