@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { appSelector } from "@/store/store";
 import { MapComponent, NewClock, Title } from "@/components";
 

@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.buttonContainer {
+  display: flex;
+  margin: 10px;
+}
+
 .clock {
   width: 260px;
   height: 260px;
@@ -21,6 +26,15 @@
   background-position: center;
   background-size: cover;
   position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #383636;
+    z-index: 2;
+  }
 }
 
 .clockName {
@@ -45,29 +59,17 @@
   width: 70%;
   margin: 2px 10px;
   cursor: pointer;
-}
-
-.clockButton:hover {
-  box-shadow: 0 0 0 2px white, 0 0 0 4px #BDC7C7;
-}
-
-.clockButton:active {
-  transform: scale(0.95);
-}
-
-.clock:before {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: #383636;
+  &:hover {
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #BDC7C7;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .hour {
   position: absolute;
   cursor: pointer;
-  z-index: 10;
 }
 
 .hours {
@@ -76,25 +78,23 @@
   justify-content: center;
   position: relative;
   border-radius: 50%;
-}
-
-.hours:before {
-  content: '';
-  position: absolute;
-  width: 8px;
-  height: 70px;
-  background-color: #383636;
-  border-radius: 6px 6px 0 0;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 70px;
+    background-color: #383636;
+    border-radius: 6px 6px 0 0;
+  }
 }
 
 .hoursSmall {
   height: 100px;
   cursor:auto;
-}
-
-.hoursSmall:before {
-  height: 50px;
-  width: 6px;
+  &:before {
+    height: 50px;
+    width: 6px;
+  }
 }
 
 .minute {
@@ -107,23 +107,21 @@
   justify-content: center;
   position: relative;
   border-radius: 50%;
-}
-
-.minutes:before {
-  content: '';
-  position: absolute;
-  width: 4px;
-  height: 80px;
-  background-color: rgb(39, 36, 36);
-  border-radius: 6px 6px 0 0;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 80px;
+    background-color: rgb(39, 36, 36);
+    border-radius: 6px 6px 0 0;
+  }
 }
 
 .minutesSmall {
   height: 130px;
-}
-
-.minutesSmall:before {
-  height: 70px;
+  &:before {
+    height: 70px;
+  }
 }
 
 .second {
@@ -136,26 +134,19 @@
   justify-content: center;
   position: relative;
   border-radius: 50%;
-}
-
-.seconds:before {
-  content: '';
-  position: absolute;
-  width: 2px;
-  height: 120px;
-  background-color: rgb(216, 48, 48);
-  border-radius: 6px 6px 0 0;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 120px;
+    background-color: rgb(216, 48, 48);
+    border-radius: 6px 6px 0 0;
+  }
 }
 
 .secondsSmall {
   height: 140px;
-}
-
-.secondsSmall:before {
-  height: 90px;
-}
-
-.buttonContainer {
-  display: flex;
-  margin: 10px;
+  &:before {
+    height: 90px;
+  }
 }

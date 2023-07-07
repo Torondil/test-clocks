@@ -5,6 +5,3 @@ export type NewClockType = {
   name: string
   isSmall?: boolean
 }
-export type ClockRef = {
-  current: Nullable<HTMLDivElement>;
-}

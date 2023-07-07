@@ -1,4 +1,4 @@
-import styles from "./NewClock.module.css";
+import styles from "./NewClock.module.scss";
 import React, { FC, memo, useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { actionTypes } from "@/store/actionTypes/index.js";
@@ -41,17 +41,10 @@ export const NewClock: FC<NewClockType> = memo(({ timeZone, name, isSmall = fals
 
   const clock = (): void => {
     const day = moment().zone(timeZone)["_d"];
-    // console.log(day1.getHours(), 'время 1')
-    const day1 = moment().zone(timeZone).toDate();
-    // console.log(day1.getHours(), 'время 2')
 
     const currentHours: number = day.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - MINUTES_IN_HOUR;
-    // const currentHours1: number = day1.getHours() * DEGREES_TO_ROTATE_HOUR_HAND - MINUTES_IN_HOUR;
-    // console.log(currentHours1)
-    
     const currentMinutes: number = day.getMinutes() * DEGREES_TO_ROTATE_SECONDS_HAND;
     const currentSeconds: number = day.getSeconds() * DEGREES_TO_ROTATE_SECONDS_HAND;
-    console.log(currentHours, currentMinutes, currentSeconds)
 
     hours.current!.style.transform = `rotateZ(${currentHours + currentMinutes / HOURS_ON_CLOCK_FACE}deg)`;
     minutes.current!.style.transform = `rotateZ(${currentMinutes}deg)`;

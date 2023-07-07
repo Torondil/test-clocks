@@ -1,5 +1,5 @@
 import { timeZoneHours } from "@/constants/index";
-import styles from "./MapComponent.module.css";
+import styles from "./MapComponent.module.scss";
 import moment from "moment";
 import { appSelector, useAppDispatch } from "@/store/store";
 import { setNewDateAction } from "@/store/actionCreators";
