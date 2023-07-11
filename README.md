@@ -1,7 +1,7 @@
 # Test task - analog clock
 
 This is a test task, which is a combination of the interaction of an analog clock with a world map. The application has
-buttons for changing the user's time zone, as well as. an interactive map that highlights the active area with a blue
+buttons for changing the user's time zone, as well as an interactive map that highlights the active area with a blue
 glow (the area that matches the current value of the time zone)
 
 **Deploy:** https://world-clock-test-app.netlify.app/
